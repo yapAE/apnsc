@@ -110,7 +110,8 @@ COPY ./config ./opt/www
 VOLUME ["/opt/www/bidangjia", "/usr/local/var/log/php7", "/var/run/"]
 WORKDIR /opt/www/bidangjia
 
-
+#4.1 EXPOSE 80
+EXPOSE 80
 #5.ADD-SUPERVISOR
 RUN apk add supervisor \
 	&& rm -rf /var/cache/apk/*
@@ -153,9 +154,9 @@ VOLUME /var/log/cron
 
 #9.添加启动脚本
 # Define working directory.
-WORKDIR /usr/share/nginx/html
-COPY ./entrypoint.sh /usr/share/nginx/html/
-RUN chmod +x /usr/share/nginx/html/entrypoint.sh
+WORKDIR /opt/www/
+COPY ./entrypoint.sh /opt/www/
+RUN chmod +x /opt/www/entrypoint.sh
 
 #CMD ["supervisord", "--nodaemon", "--configuration", "/etc/supervisor/conf.d/supervisord.conf"]
 ENTRYPOINT ["./entrypoint.sh"]
