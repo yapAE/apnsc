@@ -101,7 +101,6 @@ COPY ./nginx/cert/ /etc/nginx/cert/
 
 RUN mkdir -p /opt/www
 COPY ./bidangjia ./opt/www
-COPY ./config ./opt/www
 #COPY ./php/index.php /usr/share/nginx/html/public/
 #RUN mkdir -p /run/nginx
 #RUN touch /run/nginx/nginx.pid
