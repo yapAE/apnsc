@@ -20,51 +20,51 @@ ENV COMPOSER_ALLOW_SUPERUSER 1
 RUN apk update \
 	&& apk upgrade \
 	&& apk add \
-		curl \
-		tzdata \
-		php7-fpm\
-	    php7 \
-	    php7-dev \
-	    php7-apcu \
-	    php7-bcmath \
-	    php7-xmlwriter \
-	    php7-ctype \
-	    php7-curl \
-	    php7-exif \
-	    php7-iconv \
-	    php7-intl \
-	    php7-json \
-	    php7-mbstring\
-	    php7-opcache \
-	    php7-openssl \
-	    php7-pcntl \
-	    php7-pdo \
-	    php7-mysqlnd \
-	    php7-mysqli \
-	    php7-pdo_mysql \
-	    php7-pdo_pgsql \
-	    php7-phar \
-	    php7-posix \
-	    php7-session \
-	    php7-xml \
-	    php7-simplexml \
-	    php7-mcrypt \
-	    php7-xsl \
-	    php7-zip \
-	    php7-zlib \
-	    php7-dom \
-	    php7-redis\
-	    php7-tokenizer \
-	    php7-gd \
-		php7-mongodb\
-		php7-fileinfo \
-		php7-zmq \
-		php7-memcached \
-		php7-xmlreader \
- 	&& cp /usr/share/zoneinfo/${TIMEZONE} /etc/localtime \
+	curl \
+	tzdata \
+	php7-fpm\
+	php7 \
+	php7-dev \
+	php7-apcu \
+	php7-bcmath \
+	php7-xmlwriter \
+	php7-ctype \
+	php7-curl \
+	php7-exif \
+	php7-iconv \
+	php7-intl \
+	php7-json \
+	php7-mbstring\
+	php7-opcache \
+	php7-openssl \
+	php7-pcntl \
+	php7-pdo \
+	php7-mysqlnd \
+	php7-mysqli \
+	php7-pdo_mysql \
+	php7-pdo_pgsql \
+	php7-phar \
+	php7-posix \
+	php7-session \
+	php7-xml \
+	php7-simplexml \
+	php7-mcrypt \
+	php7-xsl \
+	php7-zip \
+	php7-zlib \
+	php7-dom \
+	php7-redis\
+	php7-tokenizer \
+	php7-gd \
+	#		php7-mongodb\
+	php7-fileinfo \
+	php7-zmq \
+	php7-memcached \
+	php7-xmlreader \
+	&& cp /usr/share/zoneinfo/${TIMEZONE} /etc/localtime \
 	&& echo "${TIMEZONE}" > /etc/timezone \
 	&& apk del tzdata \
- 	&& rm -rf /var/cache/apk/*
+	&& rm -rf /var/cache/apk/*
 
 # https://github.com/docker-library/php/issues/240
 # https://gist.github.com/guillemcanal/be3db96d3caa315b4e2b8259cab7d07e
@@ -89,7 +89,7 @@ RUN sed -i "s|;*date.timezone =.*|date.timezone = ${TIMEZONE}|i" /etc/php7/php.i
 
 #3.Install-Composer
 RUN curl -sS https://getcomposer.org/installer | \
-    php -- --install-dir=/usr/bin/ --filename=composer
+	php -- --install-dir=/usr/bin/ --filename=composer
 
 
 
@@ -99,8 +99,10 @@ COPY ./nginx/conf.d/default.conf /etc/nginx/conf.d/
 COPY ./nginx/nginx.conf /etc/nginx/
 COPY ./nginx/cert/ /etc/nginx/cert/
 
-RUN mkdir -p /usr/share/nginx/html/public/
-COPY ./php/index.php /usr/share/nginx/html/public/
+RUN mkdir -p /opt/www
+COPY ../bidangjia ./opt/www
+COPY ../config ./opt/www
+#COPY ./php/index.php /usr/share/nginx/html/public/
 #RUN mkdir -p /run/nginx
 #RUN touch /run/nginx/nginx.pid
 # Expose volumes
@@ -111,7 +113,7 @@ WORKDIR /usr/share/nginx/html
 
 #5.ADD-SUPERVISOR
 RUN apk add supervisor \
- && rm -rf /var/cache/apk/*
+	&& rm -rf /var/cache/apk/*
 
 # Define mountable directories.
 VOLUME ["/etc/supervisor/conf.d", "/var/log/supervisor/"]
@@ -121,7 +123,7 @@ COPY ./supervisor/conf.d/ /etc/supervisor/conf.d/
 COPY ./crontabs/default /var/spool/cron/crontabs/
 RUN cat /var/spool/cron/crontabs/default >> /var/spool/cron/crontabs/root
 RUN mkdir -p /var/log/cron \
- && touch /var/log/cron/cron.log
+	&& touch /var/log/cron/cron.log
 
 VOLUME /var/log/cron
 
