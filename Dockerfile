@@ -100,15 +100,15 @@ COPY ./nginx/nginx.conf /etc/nginx/
 COPY ./nginx/cert/ /etc/nginx/cert/
 
 RUN mkdir -p /opt/www
-COPY ../bidangjia ./opt/www
-COPY ../config ./opt/www
+COPY ./bidangjia ./opt/www
+COPY ./config ./opt/www
 #COPY ./php/index.php /usr/share/nginx/html/public/
 #RUN mkdir -p /run/nginx
 #RUN touch /run/nginx/nginx.pid
 # Expose volumes
 
-VOLUME ["/usr/share/nginx/html", "/usr/local/var/log/php7", "/var/run/"]
-WORKDIR /usr/share/nginx/html
+VOLUME ["/opt/www/bidangjia", "/usr/local/var/log/php7", "/var/run/"]
+WORKDIR /opt/www/bidangjia
 
 
 #5.ADD-SUPERVISOR
