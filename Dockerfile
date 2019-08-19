@@ -105,8 +105,8 @@ COPY ./bidangjia ./opt/www/bidangjia
 #RUN mkdir -p /run/nginx
 #RUN touch /run/nginx/nginx.pid
 # Expose volumes
-
-VOLUME ["/opt/www/bidangjia", "/usr/local/var/log/php7", "/var/run/"]
+RUN mkdir -p /nfs/api.bidangjia.com/runtime/logs/
+VOLUME ["/opt/www/bidangjia", "/usr/local/var/log/php7", "/var/run/","/nfs/api.bidangjia.com/runtime/logs/"]
 WORKDIR /opt/www/bidangjia
 
 #4.1 EXPOSE 80
