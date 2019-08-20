@@ -105,8 +105,8 @@ COPY ./html ./opt/www/html
 #RUN mkdir -p /run/nginx
 #RUN touch /run/nginx/nginx.pid
 # Expose volumes
-RUN mkdir -p /var/api.biliver.com/runtime/logs
-VOLUME ["/opt/www/html", "/usr/local/var/log/php7", "/var/run/","/var/api.biliver.com/runtime/logs"]
+RUN mkdir -p /var/api.biliver.io/runtime/logs
+VOLUME ["/opt/www/html", "/usr/local/var/log/php7", "/var/run/","/var/api.biliver.io/runtime/logs"]
 WORKDIR /opt/www/html
 
 #4.1 EXPOSE 80
