@@ -1,3 +1,126 @@
 # do daily/weekly/monthly maintenance
 # min   hour    day     month   weekday command
 # * 		* 		* 		*	 	* 		/usr/bin/php /usr/share/nginx/html/artisan schedule:run >> /dev/null 2>&1
+
+* * * * * /usr/bin/php /opt/www/html/yii match-order/match -t=2 -o=0 -l=100  > /dev/null 2>&1
+* * * * * /usr/bin/php /opt/www/html/yii match-order/match -t=1 -o=0 -l=100  > /dev/null 2>&1
+
+#支点海外版
+*/20 * * * * /usr/bin/php /opt/www/html/yii snatch-robot/snatch pivot.one 100 > /dev/null 2>&1
+
+#tradingview.com
+*/20 * * * * /usr/bin/php /opt/www/html/yii snatch-robot/snatch tradingview.com 100 > /dev/null 2>&1
+
+#twitter.com
+*/10 * * * * /usr/bin/php /opt/www/html/yii snatch-robot/snatch twitter.com 100 > /dev/null 2>&1
+
+#robot add content
+15 1 * * * /usr/bin/php /opt/www/html/yii robot/publish-topic -l 40 > /dev/null 2>&1
+30 1 * * * /usr/bin/php /opt/www/html/yii robot/publish-topic -l 40 > /dev/null 2>&1
+45 1 * * * /usr/bin/php /opt/www/html/yii robot/publish-topic -l 40 > /dev/null 2>&1
+
+
+#搜索服务
+30 * * * * /usr/bin/indexer -c /etc/sphinxsearch/sphinx.conf user_info_index --rotate
+
+#任务分配
+* * * * * /usr/bin/php /opt/www/html/yii robot/assign-task > /dev/null 2>&1
+
+#预测贴相关任务
+*/10 * * * * /usr/bin/php /opt/www/html/yii update-forecast/update-price > /dev/null 2>&1
+*/15 * * * * /usr/bin/php /opt/www/html/yii update-forecast/update-status > /dev/null 2>&1
+*/15 * * * * /usr/bin/php /opt/www/html/yii update-forecast/coin-counter > /dev/null 2>&1
+*/15 * * * * /usr/bin/php /opt/www/html/yii update-forecast/reward-to-user > /dev/null 2>&1
+*/15 * * * * /usr/bin/php /opt/www/html/yii update-forecast/user-counter > /dev/null 2>&1
+*/15 * * * * /usr/bin/php /opt/www/html/yii update-forecast/withdraw-task > /dev/null 2>&1
+#* */1 * * * /usr/bin/php /opt/www/html/yii update-data/monitor-coin-data > /dev/null 2>&1
+
+#汇率定时任务
+12 * * * * /usr/bin/php /opt/www/html/yii update-data/exchange-rate > /dev/null 2>&1
+0 0 * * * /usr/bin/php /opt/www/html/yii airdrop/create-manual > /dev/null 2>&1
+
+#炒币牛人
+*/15 * * * * /opt/www/html/yii genius/create >> /tmp/genius.json
+*/30 * * * * /opt/www/html/yii batch/init-news-content > /dev/null 2>&1
+*/10 * * * * /opt/www/html/yii push/analysis
+*/10 * * * * /opt/www/html/yii push/send-push
+*/3 * * * * /opt/www/html/yii batch/push-forecast
+
+#交易数据拉取
+*/2 * * * * /usr/bin/php /opt/www/html/yii airdrop/pull-transaction > /dev/null 2>&1
+
+#机器人
+#抓取
+0 * * * * /usr/bin/php /opt/www/html/yii robot/snatch-zd > /dev/null 2>&1
+#任务分配
+* * * * * /usr/bin/php /opt/www/html/yii robot/assign-task > /dev/null 2>&1
+#发帖训练
+0 1 * * * /usr/bin/php /opt/www/html/yii robot/publish-topic -l 20 > /dev/null 2>&1
+0 3 * * * /usr/bin/php /opt/www/html/yii robot/train-robot -l 150 > /dev/null 2>&1
+0 2 * * 3 /usr/bin/php /opt/www/html/yii robot/create-order -l 50 > /dev/null 2>&1
+0 10-22 * * * /usr/bin/php /opt/www/html/yii robot/sell-coin > /dev/null 2>&1
+
+#币价提醒
+* * * * * /opt/www/html/yii coin-notice/run
+
+# 生成数据分析报表数据
+0 0 * * * /opt/www/html/yii analyse/user-data
+0 0 * * * /opt/www/html/yii analyse/user-data-record
+
+#爆仓任务
+* * * * * /usr/bin/php /opt/www/html/yii short-sale/push-burst-jobs > /dev/null 2>&1
+* * * * * sleep 20; /usr/bin/php /opt/www/html/yii short-sale/push-burst-jobs > /dev/null 2>&1
+* * * * * sleep 40; /usr/bin/php /opt/www/html/yii short-sale/push-burst-jobs > /dev/null 2>&1
+
+
+#每日提币
+0 12 * * * /opt/www/html/yii transfer/transfer-analyse > /dev/null 2>&1
+0 12 * * * /opt/www/html/yii transfer/check-transfer > /dev/null 2>&1
+
+#基金每日收益计算
+25 8 * * *  /usr/bin/php /opt/www/html/yii fund-data/fund-assets > /dev/null 2>&1
+
+#跟随榜排名
+*/5 * * * *  /usr/bin/php /opt/www/html/yii fund-data/fund-top day > /dev/null 2>&1
+*/5 * * * *  /usr/bin/php /opt/www/html/yii fund-data/fund-top week > /dev/null 2>&1
+*/5 * * * *  /usr/bin/php /opt/www/html/yii fund-data/fund-top month > /dev/null 2>&1
+
+#跟随榜发奖
+40 8 * * *  /usr/bin/php /opt/www/html/yii fund-data/award-record day > /dev/null 2>&1
+40 8 * * 0  /usr/bin/php /opt/www/html/yii fund-data/award-record week > /dev/null 2>&1
+40 8 1 * *  /usr/bin/php /opt/www/html/yii fund-data/award-record month > /dev/null 2>&1
+
+#分红榜排名
+*/5 * * * *  /usr/bin/php /opt/www/html/yii fund-data/bonus-top day > /dev/null 2>&1
+*/5 * * * *  /usr/bin/php /opt/www/html/yii fund-data/bonus-top week > /dev/null 2>&1
+*/5 * * * * /usr/bin/php /opt/www/html/yii fund-data/bonus-top month > /dev/null 2>&1
+
+#分红榜发奖
+55 8 * * *  /usr/bin/php /opt/www/html/yii fund-data/bonus-award day > /dev/null 2>&1
+55 8 * * 0  /usr/bin/php /opt/www/html/yii fund-data/bonus-award week > /dev/null 2>&1
+55 8 1 * * /usr/bin/php /opt/www/html/yii fund-data/bonus-award month > /dev/null 2>&1
+
+15 * * * * /usr/bin/php /opt/www/html/yii coin-match/yield-top day
+15 * * * * /usr/bin/php /opt/www/html/yii coin-match/yield-top week
+15 * * * * /usr/bin/php /opt/www/html/yii coin-match/yield-top month
+
+11 * * * * /usr/bin/php /opt/www/html/yii coin-match/yield-rank day
+11 * * * * /usr/bin/php /opt/www/html/yii coin-match/yield-rank week
+11 * * * * /usr/bin/php /opt/www/html/yii coin-match/yield-rank month
+
+
+#奖励
+#每天
+15 8 * * * /usr/bin/php /opt/www/html/yii coin-match/yield-record day
+#每周日
+15 8 * * 0 /usr/bin/php /opt/www/html/yii coin-match/yield-record week
+#每月1日
+15 8 * 1 * /usr/bin/php /opt/www/html/yii coin-match/yield-record month
+
+10 8 * * * /usr/bin/php /opt/www/html/yii user-asset/index > /dev/null 2>&1
+
+
+0 * * * * /usr/bin/php /opt/www/html/yii token/send
+
+
+#5 */3 * * * /usr/bin/php /opt/deploy/crawler/http/update_feixiaohao_coin_info.php > /dev/null 2>&1

@@ -100,14 +100,14 @@ COPY ./nginx/nginx.conf /etc/nginx/
 COPY ./nginx/cert/ /etc/nginx/cert/
 
 RUN mkdir -p /opt/www
-COPY ./bidangjia ./opt/www/bidangjia
+COPY ./bidangjia ./opt/www/html
 #COPY ./php/index.php /usr/share/nginx/html/public/
 #RUN mkdir -p /run/nginx
 #RUN touch /run/nginx/nginx.pid
 # Expose volumes
-RUN mkdir -p /nfs/api.bidangjia.com/runtime/logs/
-VOLUME ["/opt/www/bidangjia", "/usr/local/var/log/php7", "/var/run/","/nfs/api.bidangjia.com/runtime/logs/"]
-WORKDIR /opt/www/bidangjia
+RUN mkdir -p /var/api.biliver.com/runtime/logs
+VOLUME ["/opt/www/html", "/usr/local/var/log/php7", "/var/run/","/var/api.biliver.com/runtime/logs"]
+WORKDIR /opt/www/html
 
 #4.1 EXPOSE 80
 EXPOSE 80
