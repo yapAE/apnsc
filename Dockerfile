@@ -100,13 +100,14 @@ COPY ./nginx/nginx.conf /etc/nginx/
 COPY ./nginx/cert/ /etc/nginx/cert/
 
 RUN mkdir -p /opt/www
+RUN mkdir -p /opt/resource/picture
 COPY ./html ./opt/www/html
 #COPY ./php/index.php /usr/share/nginx/html/public/
 #RUN mkdir -p /run/nginx
 #RUN touch /run/nginx/nginx.pid
 # Expose volumes
 RUN mkdir -p /var/api.biliver.io/runtime/logs
-VOLUME ["/opt/www/html", "/usr/local/var/log/php7", "/var/run/","/var/api.biliver.io/runtime/logs"]
+VOLUME ["/opt/www/html", "/usr/local/var/log/php7", "/var/run/","/var/api.biliver.io/runtime/logs","/opt/resource/picture"]
 WORKDIR /opt/www/html
 
 #4.1 EXPOSE 80
